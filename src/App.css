@@ -1,0 +1,30 @@
+.main {
+  margin: 10px;
+  padding: 5px;
+}
+.app_name > h1 {
+  font-weight: 100;
+  text-align: center;
+  margin: 5px;
+}
+.form_input > form > input {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-sizing: border-box;
+  font-weight: 100;
+}
+.form_input > form > input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px lightgreen;
+  font-weight: 100;
+}
+.form_input > form > button {
+  display: none;
+}
+ul {
+  list-style-type: none; /* to remove black dot from*/
+}

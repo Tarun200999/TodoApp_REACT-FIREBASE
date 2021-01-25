@@ -1,0 +1,21 @@
+.todos {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  border-radius: 10px;
+  background-color: ghostwhite;
+  margin: 5px;
+  padding: 5px;
+}
+.todo_op > button {
+  margin: 5px;
+  padding: 5px;
+}
+.todos > li {
+  font-size: large;
+}
+.todos:hover {
+  font-size: x-large;
+  border: 2px dotted gray;
+  font-weight: 500px;
+}
