@@ -1,13 +1,15 @@
 import firebase from "firebase";
-
-const firebaseApp =firebase.initializeApp({
-  apiKey: "AIzaSyCoNCC5jSnfquwZS85wR_N5lmuQs7sAyzQ",
-  authDomain: "todopp-c2c8b.firebaseapp.com",
-  projectId: "todopp-c2c8b",
-  storageBucket: "todopp-c2c8b.appspot.com",
-  messagingSenderId: "952573267755",
-  appId: "1:952573267755:web:57c6b19425524074597f6e"
-
+const firebaseApp = firebase.initializeApp({
+  //api keys are SECREAT KEYS
+  apiKey: process.env.REACT_APP_APIKEY,
+  authDomain: process.env.REACT_APP_AUTHDOMAIN,
+  projectId: process.env.REACT_APP_PROJECTID,
+  storageBucket: process.env.REACT_APP_STORAGEBUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGINGSENDERID,
+  appId: process.env.REACT_APP_APPID,
 });
-const db=firebaseApp.firestore();
-export default db ;
+const db = firebaseApp.firestore();
+const auth = firebaseApp.auth();
+const provider = new firebase.auth.GoogleAuthProvider();
+export { auth, provider };
+export default db;

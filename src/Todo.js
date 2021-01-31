@@ -1,49 +1,35 @@
-import {
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Button,
-  Modal,
-  Input,
-} from "@material-ui/core";
 import React, { useState } from "react";
 import "./Todo.css";
 import db from "./firebase";
+import { useStateValue } from "./StateProvider";
+//import $ from "jquery";
 function Todo(props) {
   const [open, setOpen] = useState(false);
   const [newtodo, setTodo] = useState("");
+  const [{ user }, dispatch] = useStateValue();
   return (
     <>
-      <Modal open={open} onClose={(e) => setOpen(false)}>
-        <div className="edit_modal">
-          <Input
-            placeholder={props.text.todo}
-            value={newtodo}
-            onChange={(event) => setTodo(event.target.value)}
-          />
-          <Button
+      <div className="todos">
+        <div className="todo_item">
+          <h1>{props.text.todo}</h1>
+          <button
+            className="btn btn-outline-success"
             onClick={() => {
-              db.collection("todos").doc(props.text.id).set(
-                {
-                  todo: newtodo,
-                },
-                { merge: true }
-              );
+              db.collection("users")
+                .doc(user.uid)
+                .collection("todos")
+                .doc(props.text.id)
+                .set(
+                  {
+                    todo: newtodo,
+                  },
+                  { merge: true }
+                );
             }}
           >
             Edit
-          </Button>
+          </button>
         </div>
-      </Modal>
-      <div className="todos">
-        <li
-          onClick={() => {
-            alert("hello");
-          }}
-        >
-          {props.text.todo}
-        </li>
         <div className="todo_op">
           <button
             className="btn btn-outline-danger"
@@ -52,12 +38,6 @@ function Todo(props) {
             }}
           >
             Delete
-          </button>
-          <button
-            className="btn btn-outline-primary"
-            onClick={(e) => setOpen(true)}
-          >
-            Edit
           </button>
         </div>
       </div>

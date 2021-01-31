@@ -19,3 +19,8 @@
   border: 2px dotted gray;
   font-weight: 500px;
 }
+.todo_item > input {
+  color: black;
+  border: none;
+  margin-right: 5px;
+}
