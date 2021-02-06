@@ -12,90 +12,107 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [input, setInput] = useState("");
   const [{ user }, dispatch] = useStateValue();
-  //when app loads we neeed to fetch the data from the cloud firestore and then store it out local state variabe todo
+  const [luser, setUser] = useState();
+  const [initializing, setInitializing] = useState(true);
+  const fetchData = (user) => {
+    db.collection("users")
+      .doc(user.uid)
+      .get()
+      .then((Newuser) => {
+        if (Newuser.exists === false) {
+          db.collection("users").doc(user.uid).set(
+            {
+              name: user.displayName,
+              todos: {},
+            },
+            { merge: true }
+          );
+        } else {
+          db.collection("users")
+            .doc(user.uid)
+            .collection("todos")
+            .orderBy("timestamp", "desc")
+            .onSnapshot((snapshot) => {
+              setTodos(
+                snapshot.docs.map((doc) => ({
+                  id: doc.id,
+                  todo: doc.data().todo,
+                }))
+              );
+            });
+        }
+      });
+  };
+
   useEffect(() => {
-    if (user) {
-      db.collection("users")
-        .doc(user.uid)
-        .get()
-        .then((Newuser) => {
-          if (Newuser.exists == false) {
-            console.log("users not exist");
-            db.collection("users").doc(user.uid).set(
-              {
-                name: user.displayName,
-                todos: {},
-              },
-              { merge: true }
-            );
-          } else {
-            console.log("user exists");
-            db.collection("users")
-              .doc(user.uid)
-              .collection("todos")
-              .orderBy("timestamp", "desc")
-              .onSnapshot((snapshot) => {
-                setTodos(
-                  snapshot.docs.map((doc) => ({
-                    id: doc.id,
-                    todo: doc.data().todo,
-                  }))
-                );
-                // console.log(todos);
-              });
-          }
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUser(user);
+        fetchData(user);
+        dispatch({
+          type: actionTypes.SET_USER,
+          user: user,
         });
-    }
-  }, [user]);
+      } else {
+        setUser(null);
+        dispatch({
+          type: actionTypes.SET_USER,
+          user: null,
+        });
+      }
+      if (initializing) {
+        setInitializing(false);
+      }
+    });
+    return unsubscribe;
+  }, [initializing]);
+
   const addTodo = (event) => {
-    //function will call when u click the button addtodo it will take the (input) variable
-    //and then append it to todos array which is render below
     event.preventDefault();
     if (input.length === 0) alert("Type Something");
     else {
       db.collection("users").doc(user.uid).collection("todos").add({
         todo: input,
         timestamp: firebase.firestore.FieldValue.serverTimestamp(), // i am taking the server timestamp not the local machine timestamp
-      }); // we are adding out new todo to database
-      //  setTodos([...todos,input]);
-      // NO need to do this because our input is now direactly adding to database and then
-      // refeched above and displayed again
+      });
     }
     setInput("");
   };
   const signOut = (e) => {
     e.preventDefault();
-    dispatch({
-      type: actionTypes.SET_USER,
-      user: null,
-    });
     auth
       .signOut()
-      .then(() => console.log("sign out "))
+      .then(() => {
+        dispatch({
+          type: actionTypes.SET_USER,
+          user: null,
+        });
+      })
       .catch((er) => console.log(er));
   };
   return (
     <div>
-      {!user ? (
+      {!luser ? (
         <Login />
       ) : (
         <div className="main">
           <div className="container">
             <div className="row">
               <div className="col-md-4 app_name">
-                <img src={user.photoURL} />
-                <h1>Welcome {user.displayName}..</h1>
-                <h1>To-Do</h1>
-                <button onClick={signOut} className="btn btn-primary">
-                  Sign Out
-                </button>
+                <div className="user_info">
+                  <img src={luser.photoURL} />
+                  <h3>Welcome {luser.displayName}</h3>
+                  <button onClick={signOut} className="btn btn-primary">
+                    SignOut
+                  </button>
+                </div>
               </div>
               <div className="col-md-8 form_input">
                 <form>
                   <input
                     value={input}
                     onChange={(event) => setInput(event.target.value)}
-                    placeholder="Press Enter to Add Task"
+                    placeholder="Press Enter"
                   />
                   <button
                     disabled={!input}
@@ -111,12 +128,16 @@ function App() {
               </div>
             </div>
           </div>
-          <div>
-            <ul>
-              {todos.map((todo) => (
-                <Todo text={todo} />
-              ))}
-            </ul>
+          <div className="todo_show">
+            {todos.length == 0 ? (
+              <h3>NO TODOS</h3>
+            ) : (
+              <ul>
+                {todos.map((todo) => (
+                  <Todo key={todo.id} text={todo} />
+                ))}
+              </ul>
+            )}
           </div>
         </div>
       )}

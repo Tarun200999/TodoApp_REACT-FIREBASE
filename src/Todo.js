@@ -2,39 +2,70 @@ import React, { useState } from "react";
 import "./Todo.css";
 import db from "./firebase";
 import { useStateValue } from "./StateProvider";
-//import $ from "jquery";
+import { Modal, Button, Form } from "react-bootstrap";
 function Todo(props) {
-  const [open, setOpen] = useState(false);
+  const [show, setShow] = useState(false);
   const [newtodo, setTodo] = useState("");
   const [{ user }, dispatch] = useStateValue();
+
+  const handleModal = () => {
+    setShow(true);
+  };
+
+  const handleEdit = () => {
+    if (newtodo.length === 0) {
+      alert("Can'nt be Empty");
+    } else {
+      db.collection("users")
+        .doc(user.uid)
+        .collection("todos")
+        .doc(props.text.id)
+        .set(
+          {
+            todo: newtodo,
+          },
+          { merge: true }
+        );
+      setTodo("");
+    }
+  };
   return (
     <>
       <div className="todos">
         <div className="todo_item">
-          <h1>{props.text.todo}</h1>
-          <button
-            className="btn btn-outline-success"
-            onClick={() => {
-              db.collection("users")
-                .doc(user.uid)
-                .collection("todos")
-                .doc(props.text.id)
-                .set(
-                  {
-                    todo: newtodo,
-                  },
-                  { merge: true }
-                );
-            }}
-          >
+          <h3>{props.text.todo}</h3>
+          <button onClick={handleModal} className="btn btn-outline-success">
             Edit
           </button>
+          <Modal show={show}>
+            <Modal.Header>
+              <Modal.Title>Edit</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <input
+                className="input_edit"
+                value={newtodo}
+                onChange={(e) => setTodo(e.target.value)}
+                placeholder={props.text.todo}
+              ></input>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button onClick={handleEdit}>Edit</Button>
+              <Button variant="secondary" onClick={() => setShow(false)}>
+                Close Modal
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </div>
         <div className="todo_op">
           <button
             className="btn btn-outline-danger"
             onClick={(event) => {
-              db.collection("todos").doc(props.text.id).delete();
+              db.collection("users")
+                .doc(user.uid)
+                .collection("todos")
+                .doc(props.text.id)
+                .delete();
             }}
           >
             Delete

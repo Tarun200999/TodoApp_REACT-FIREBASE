@@ -22,7 +22,7 @@ function Login() {
   return (
     <div>
       <div className="container">
-        <h1 className="display-1">Dear User Please Login to continue</h1>
+        <h1 className="display-1">WELCOME TO TODO APP</h1>
         <button onClick={signIN} className="btn btn-success">
           SIGN WITH GOOGLE
         </button>

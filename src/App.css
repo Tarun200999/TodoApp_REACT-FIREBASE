@@ -6,6 +6,22 @@
   max-width: 400px;
   width: 100px;
 }
+.user_info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+}
+.user_info > img {
+  border-radius: 50%;
+  border: 2px solid green;
+}
+.user_info > h3 {
+  font-weight: 100;
+}
+.user_info > img:hover {
+  border: 3px dotted blue;
+}
 .app_name > h1 {
   font-weight: 100;
   text-align: center;
@@ -19,7 +35,7 @@
   border: 1px solid #ccc;
   border-radius: 10px;
   box-sizing: border-box;
-  font-weight: 100;
+  font-weight: 300;
 }
 .form_input > form > input:focus {
   outline: none;
@@ -31,4 +47,9 @@
 }
 ul {
   list-style-type: none; /* to remove black dot from*/
+}
+.todo_show {
+  margin: 10px;
+  padding: 10px;
+  border-left: 3px solid blue;
 }

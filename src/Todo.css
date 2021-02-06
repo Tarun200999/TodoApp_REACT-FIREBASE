@@ -19,8 +19,16 @@
   border: 2px dotted gray;
   font-weight: 500px;
 }
-.todo_item > input {
-  color: black;
-  border: none;
-  margin-right: 5px;
+.todo_item > h3 {
+  font-weight: 500;
+}
+.input_edit {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-sizing: border-box;
+  font-weight: 300;
 }
