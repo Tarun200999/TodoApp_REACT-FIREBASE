@@ -13,6 +13,7 @@ function App() {
   const [input, setInput] = useState("");
   const [{ user }, dispatch] = useStateValue();
   const [luser, setUser] = useState();
+  const [darkmode, setDarkmode] = useState(false);
   const [initializing, setInitializing] = useState(true);
   const fetchData = (user) => {
     db.collection("users")
@@ -66,7 +67,9 @@ function App() {
     });
     return unsubscribe;
   }, [initializing]);
-
+  const handleDarkmode = () => {
+    setDarkmode(!darkmode);
+  };
   const addTodo = (event) => {
     event.preventDefault();
     if (input.length === 0) alert("Type Something");
@@ -95,13 +98,14 @@ function App() {
       {!luser ? (
         <Login />
       ) : (
-        <div className="main">
+        <div className={darkmode ? "main_dark" : "main"}>
           <div className="container">
             <div className="row">
               <div className="col-md-4 app_name">
-                <div className="user_info">
+                <div className={darkmode ? "user_info_darkmode" : "user_info"}>
                   <img src={luser.photoURL} />
                   <h3>Welcome {luser.displayName}</h3>
+
                   <button onClick={signOut} className="btn btn-primary">
                     SignOut
                   </button>
@@ -125,16 +129,34 @@ function App() {
                     Add
                   </button>
                 </form>
+                <div className="custom-control custom-switch">
+                  <input
+                    type="checkbox"
+                    value={darkmode}
+                    className="custom-control-input"
+                    id="customSwitch1"
+                    onClick={handleDarkmode}
+                  ></input>
+                  <label className="custom-control-label" for="customSwitch1">
+                    <h6
+                      className={
+                        darkmode ? "darkmode_switch" : "darkmode_switch_black"
+                      }
+                    >
+                      {darkmode ? "Dark" : "Light"} Mode
+                    </h6>
+                  </label>
+                </div>
               </div>
             </div>
           </div>
           <div className="todo_show">
             {todos.length == 0 ? (
-              <h3>NO TODOS</h3>
+              <h3 className="no_todo">NO TODOS</h3>
             ) : (
               <ul>
                 {todos.map((todo) => (
-                  <Todo key={todo.id} text={todo} />
+                  <Todo key={todo.id} text={todo} dark={darkmode} />
                 ))}
               </ul>
             )}

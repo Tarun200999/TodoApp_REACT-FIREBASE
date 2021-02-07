@@ -7,7 +7,6 @@ function Todo(props) {
   const [show, setShow] = useState(false);
   const [newtodo, setTodo] = useState("");
   const [{ user }, dispatch] = useStateValue();
-
   const handleModal = () => {
     setShow(true);
   };
@@ -31,9 +30,23 @@ function Todo(props) {
   };
   return (
     <>
-      <div className="todos">
-        <div className="todo_item">
+      <div className={props.dark ? "todos_darkmode" : "todos"}>
+        <div className={props.dark ? "todo_item_darkmode" : "todo_item"}>
           <h3>{props.text.todo}</h3>
+        </div>
+        <div className={props.dark ? "todo_op_darkmode" : " todo_op"}>
+          <button
+            className="btn btn-outline-danger"
+            onClick={(event) => {
+              db.collection("users")
+                .doc(user.uid)
+                .collection("todos")
+                .doc(props.text.id)
+                .delete();
+            }}
+          >
+            Delete
+          </button>
           <button onClick={handleModal} className="btn btn-outline-success">
             Edit
           </button>
@@ -56,20 +69,6 @@ function Todo(props) {
               </Button>
             </Modal.Footer>
           </Modal>
-        </div>
-        <div className="todo_op">
-          <button
-            className="btn btn-outline-danger"
-            onClick={(event) => {
-              db.collection("users")
-                .doc(user.uid)
-                .collection("todos")
-                .doc(props.text.id)
-                .delete();
-            }}
-          >
-            Delete
-          </button>
         </div>
       </div>
     </> //react fragment to put more than one tags in the return statement

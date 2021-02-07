@@ -5,7 +5,7 @@
   border-radius: 10px;
   background-color: ghostwhite;
   margin: 5px;
-  padding: 5px;
+  padding: 10px;
 }
 .todo_op > button {
   margin: 5px;
@@ -20,7 +20,7 @@
   font-weight: 500px;
 }
 .todo_item > h3 {
-  font-weight: 500;
+  font-weight: 300;
 }
 .input_edit {
   width: 100%;
@@ -30,5 +30,33 @@
   border: 1px solid #ccc;
   border-radius: 10px;
   box-sizing: border-box;
+}
+
+/*DARK MODE CLASSES HERE*/
+
+.todos_darkmode {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  border-radius: 10px;
+  background-color: rgb(202, 200, 200);
+  margin: 5px;
+  padding: 10px;
+}
+.todo_op_darkmode > button {
+  margin: 5px;
+  padding: 5px;
+  background-color: rgb(242, 242, 243);
+  border: 1px double rgb(95, 92, 92);
+  color: rgb(73, 70, 70);
+}
+.btn:hover {
+  color: white;
+}
+.todos_darkmode > li {
+  font-size: large;
+}
+.todo_item_darkmode > h3 {
   font-weight: 300;
+  color: rgb(0, 0, 0);
 }

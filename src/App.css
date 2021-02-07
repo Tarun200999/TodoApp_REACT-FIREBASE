@@ -1,6 +1,5 @@
 .main {
-  margin: 10px;
-  padding: 5px;
+  padding: 10px;
 }
 .login_form {
   max-width: 400px;
@@ -52,4 +51,35 @@ ul {
   margin: 10px;
   padding: 10px;
   border-left: 3px solid blue;
+}
+.no_todo {
+  color: lightgreen;
+}
+.darkmode_switch {
+  color: lightyellow;
+}
+/* DARK MODE CLASSES */
+
+.main_dark {
+  padding: 10px;
+  background-color: rgb(58, 57, 57);
+  min-width: 100vw;
+  min-height: 100vh;
+}
+.user_info_darkmode {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+}
+.user_info_darkmode > img {
+  border-radius: 50%;
+  border: 2px solid green;
+}
+.user_info_darkmode > h3 {
+  font-weight: 100;
+  color: white;
+}
+.user_info_darkmode > img:hover {
+  border: 3px dotted blue;
 }

@@ -2,6 +2,7 @@ import React from "react";
 import { auth, provider } from "./firebase";
 import { useStateValue } from "./StateProvider";
 import { actionTypes } from "./reducer";
+import "./Login.css";
 function Login() {
   const [{}, dispatch] = useStateValue(); // we have took the reducer dispatch methos here
 
@@ -21,7 +22,7 @@ function Login() {
   };
   return (
     <div>
-      <div className="container">
+      <div className="login">
         <h1 className="display-1">WELCOME TO TODO APP</h1>
         <button onClick={signIN} className="btn btn-success">
           SIGN WITH GOOGLE
