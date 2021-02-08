@@ -23,10 +23,12 @@ function Login() {
   return (
     <div>
       <div className="login">
-        <h1 className="display-1">WELCOME TO TODO APP</h1>
-        <button onClick={signIN} className="btn btn-success">
-          SIGN WITH GOOGLE
-        </button>
+        <div className="login_form">
+          <h3>WELCOME TO TODO APP</h3>
+          <button onClick={signIN} className="btn btn-success">
+            SIGN WITH GOOGLE
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -24,11 +24,11 @@ function App() {
           db.collection("users").doc(user.uid).set(
             {
               name: user.displayName,
+              darkmode: false,
               todos: {},
             },
             { merge: true }
           );
-        } else {
           db.collection("users")
             .doc(user.uid)
             .collection("todos")
@@ -41,6 +41,25 @@ function App() {
                 }))
               );
             });
+          setDarkmode(false);
+        } else {
+          db.collection("users")
+            .doc(user.uid)
+            .collection("todos")
+            .orderBy("timestamp", "desc")
+            .onSnapshot((snapshot) => {
+              setTodos(
+                snapshot.docs.map((doc) => ({
+                  id: doc.id,
+                  todo: doc.data().todo,
+                  checked: doc.data().checked,
+                }))
+              );
+            });
+          db.collection("users")
+            .doc(user.uid)
+            .get()
+            .then((snapshot) => setDarkmode(snapshot.data().darkmode));
         }
       });
   };
@@ -68,6 +87,12 @@ function App() {
     return unsubscribe;
   }, [initializing]);
   const handleDarkmode = () => {
+    db.collection("users").doc(user.uid).set(
+      {
+        darkmode: !darkmode,
+      },
+      { merge: true }
+    );
     setDarkmode(!darkmode);
   };
   const addTodo = (event) => {
@@ -76,6 +101,7 @@ function App() {
     else {
       db.collection("users").doc(user.uid).collection("todos").add({
         todo: input,
+        checked: false,
         timestamp: firebase.firestore.FieldValue.serverTimestamp(), // i am taking the server timestamp not the local machine timestamp
       });
     }

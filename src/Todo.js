@@ -7,8 +7,18 @@ function Todo(props) {
   const [show, setShow] = useState(false);
   const [newtodo, setTodo] = useState("");
   const [{ user }, dispatch] = useStateValue();
-  const handleModal = () => {
-    setShow(true);
+  const handleModal = () => {};
+  const handleCheckBox = () => {
+    db.collection("users")
+      .doc(user.uid)
+      .collection("todos")
+      .doc(props.text.id)
+      .set(
+        {
+          checked: !props.text.checked,
+        },
+        { merge: true }
+      );
   };
 
   const handleEdit = () => {
@@ -32,6 +42,12 @@ function Todo(props) {
     <>
       <div className={props.dark ? "todos_darkmode" : "todos"}>
         <div className={props.dark ? "todo_item_darkmode" : "todo_item"}>
+          <input
+            className="todo_checkbox"
+            onClick={handleCheckBox}
+            type="checkbox"
+            checked={props.text.checked}
+          ></input>
           <h3>{props.text.todo}</h3>
         </div>
         <div className={props.dark ? "todo_op_darkmode" : " todo_op"}>

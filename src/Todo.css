@@ -19,6 +19,9 @@
   border: 2px dotted gray;
   font-weight: 500px;
 }
+.todo_item {
+  position: relative;
+}
 .todo_item > h3 {
   font-weight: 300;
 }
@@ -32,6 +35,14 @@
   box-sizing: border-box;
 }
 
+.todo_checkbox {
+  position: absolute;
+  left: -50px;
+  top: 15px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
 /*DARK MODE CLASSES HERE*/
 
 .todos_darkmode {
@@ -55,6 +66,9 @@
 }
 .todos_darkmode > li {
   font-size: large;
+}
+.todo_item_darkmode {
+  position: relative;
 }
 .todo_item_darkmode > h3 {
   font-weight: 300;
