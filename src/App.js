@@ -142,7 +142,7 @@ function App() {
                   <input
                     value={input}
                     onChange={(event) => setInput(event.target.value)}
-                    placeholder="Press Enter"
+                    placeholder="Type & Hit Enter"
                   />
                   <button
                     disabled={!input}

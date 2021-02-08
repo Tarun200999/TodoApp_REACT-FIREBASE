@@ -7,7 +7,9 @@ function Todo(props) {
   const [show, setShow] = useState(false);
   const [newtodo, setTodo] = useState("");
   const [{ user }, dispatch] = useStateValue();
-  const handleModal = () => {};
+  const handleModal = () => {
+    setShow(!show);
+  };
   const handleCheckBox = () => {
     db.collection("users")
       .doc(user.uid)
